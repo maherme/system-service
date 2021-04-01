@@ -1,8 +1,17 @@
+/**
+ * @file main.c
+ * @brief this file contains main function of the system service.
+ */
+
 #include <stdlib.h>
 #include <unistd.h>
 #include <stdio.h>
+#include "../inc/hashtable.h"
 
-int main (int argc, char *argv[]){
+/**
+ * @brief main function of the system service.
+ */
+int main(int argc, char *argv[]){
 
     pid_t rf;
 
