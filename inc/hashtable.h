@@ -32,7 +32,5 @@ HashTable* ht_create_table(int size);
 void ht_free_table(HashTable *table);
 void ht_insert(HashTable *table, ht_key_t key, ht_value_t value);
 HtItem* ht_search(HashTable *table, ht_key_t key);
-void print_search(HashTable *table, ht_key_t key);
-void print_table(HashTable *table);
 
 #endif

@@ -35,6 +35,20 @@ static void *allocate_mem(size_t mem_size, size_t nelem){
 }
 
 /**
+ * @brief function to update a string. Similar to strdup
+ * but checking malloc error.
+ *
+ * @param[i] *src pointer to new string value.
+ *
+ * @return pointer returned to the new string.
+ */
+static char* upd_str(const char *src){
+    size_t len = strlen(src)+1;
+    char *des = allocate_mem(strlen(src)+1, 0);
+    return (char *)memcpy(des, src, len);
+}
+
+/**
  * @brief function to calculate the index in the hash table.
  *
  * @param[in] *table pointer to hash table.
@@ -64,8 +78,8 @@ static int ht_index(HashTable *table, const ht_key_t key){
 static HtItem* ht_create_item(ht_key_t key, ht_value_t value){
 
     HtItem *item = allocate_mem(sizeof(*item), 0);
-    item->key = strdup(key);
-    item->value = strdup(value);
+    item->key = upd_str(key);
+    item->value = upd_str(value);
     item->next = NULL;
 
     return item;
@@ -145,7 +159,8 @@ void ht_insert(HashTable *table, ht_key_t key, ht_value_t value){
 
     while(item){ /* check if key already exists */
         if(strcmp(item->key, key) == 0){
-            item->value = strdup(value); /* value is udpated */
+            free(item->value); /* upd_str is malloc + memcpy */
+            item->value = upd_str(value); /* value is udpated */
             return;
         }
         slot = &item->next;
