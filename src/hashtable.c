@@ -42,9 +42,11 @@ static void *allocate_mem(size_t mem_size, size_t nelem){
  *
  * @return pointer returned to the new string.
  */
-static char* upd_str(const char *src){
+char* upd_str(const char *src){
+
     size_t len = strlen(src)+1;
     char *des = allocate_mem(strlen(src)+1, 0);
+
     return (char *)memcpy(des, src, len);
 }
 
@@ -72,14 +74,16 @@ static int ht_index(HashTable *table, const ht_key_t key){
  *
  * @param[in] key key to store in the hash table.
  * @param[in] value value to store in the hash table.
+ * @param[in] section section to store in the hash table.
  *
  * @return pointer to the item in the hash table.
  */
-static HtItem* ht_create_item(ht_key_t key, ht_value_t value){
+static HtItem* ht_create_item(ht_key_t key, ht_value_t value, ht_section_t section){
 
     HtItem *item = allocate_mem(sizeof(*item), 0);
     item->key = upd_str(key);
     item->value = upd_str(value);
+    item->section = upd_str(section);
     item->next = NULL;
 
     return item;
@@ -96,6 +100,7 @@ static void ht_free_item(HtItem *item){
 
     free(item->key);
     free(item->value);
+    free(item->section);
     free(item);
 }
 
@@ -144,10 +149,11 @@ void ht_free_table(HashTable *table){
  * @param[out] *table pointer to the hash table.
  * @param[in] key key to store in the hash table.
  * @param[in] value value to store in the hash table.
+ * @param[in] section section to store in the hash table.
  *
  * @return void.
  */
-void ht_insert(HashTable *table, ht_key_t key, ht_value_t value){
+void ht_insert(HashTable *table, ht_key_t key, ht_value_t value, ht_section_t section){
 
     int index = ht_index(table, key);
     HtItem **slot = &table->items[index];
@@ -161,13 +167,14 @@ void ht_insert(HashTable *table, ht_key_t key, ht_value_t value){
         if(strcmp(item->key, key) == 0){
             free(item->value); /* upd_str is malloc + memcpy */
             item->value = upd_str(value); /* value is udpated */
+            item->section = upd_str(section); /* value is updated */
             return;
         }
         slot = &item->next;
         item = *slot;
     }
 
-    *slot = ht_create_item(key, value);
+    *slot = ht_create_item(key, value, section);
 }
 
 /**

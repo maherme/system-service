@@ -8,6 +8,7 @@
 
 typedef char* ht_key_t;
 typedef char* ht_value_t;
+typedef char* ht_section_t;
 
 /** @struct HtItem
  *  @brief each item of the hash table.
@@ -16,6 +17,7 @@ typedef struct HtItem HtItem;
 struct HtItem{
     ht_key_t key;
     ht_value_t value;
+    ht_section_t section;
     HtItem *next; /* used for hash collisions */
 };
 
@@ -28,9 +30,10 @@ typedef struct HashTable{
     int count;
 } HashTable;
 
+char* upd_str(const char *src);
 HashTable* ht_create_table(int size);
 void ht_free_table(HashTable *table);
-void ht_insert(HashTable *table, ht_key_t key, ht_value_t value);
+void ht_insert(HashTable *table, ht_key_t key, ht_value_t value, ht_section_t section);
 HtItem* ht_search(HashTable *table, ht_key_t key);
 
 #endif

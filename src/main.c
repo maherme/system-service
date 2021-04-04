@@ -7,6 +7,7 @@
 #include <unistd.h>
 #include <stdio.h>
 #include "../inc/hashtable.h"
+#include "../inc/iniparse.h"
 
 /**
  * @brief main function of the system service.
@@ -14,6 +15,7 @@
 int main(int argc, char *argv[]){
 
     pid_t rf;
+    HashTable* ht = ht_create_table(16);
 
     rf = fork();
     switch(rf){
@@ -28,6 +30,12 @@ int main(int argc, char *argv[]){
         default:
             exit(EXIT_SUCCESS);
     }
+
+    if(ini_file_parse(ht) != 0){
+        perror("Error: ini file could not be parsed");
+    }
+
+    ht_free_table(ht);
 
     return 0;
 }

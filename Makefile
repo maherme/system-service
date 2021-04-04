@@ -4,7 +4,8 @@ INC_DIR = ./inc
 OBJ_DIR = ./obj
 BIN_DIR = ./bin
 OBJS = $(OBJ_DIR)/main.o \
-	   $(OBJ_DIR)/hashtable.o
+	   $(OBJ_DIR)/hashtable.o \
+	   $(OBJ_DIR)/iniparse.o
 CFLAGS = -Wall -I$(INC_DIR)
 
 $(TARGET) : $(OBJS)
