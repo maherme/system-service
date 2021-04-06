@@ -15,6 +15,48 @@
 
 static HashTable *ht;
 
+static void reload_config(void);
+static void log_config(void);
+static void sig_handler(int sig_num);
+static void subscriptions(void);
+
+/**
+ * @brief main function of the system service.
+ */
+int main(int argc, char *argv[]){
+
+    pid_t rf;
+    ht = ht_create_table(16);
+
+    rf = fork();
+    switch(rf){
+        /* fork returns error */
+        case -1:
+            perror("Error: fork could not be completed");
+            exit(EXIT_FAILURE);
+        /* Child process, it is the daemon process */
+        case 0:
+            break;
+        /* Parent process, let it terminate */
+        default:
+            exit(EXIT_SUCCESS);
+    }
+
+    if(ini_file_parse(ht) != 0){
+        perror("Error: ini file could not be parsed");
+    }
+
+    subscriptions();
+
+    while(true){
+        pause();
+    }
+
+    ht_free_table(ht);
+
+    return 0;
+}
+
 /**
  * @brief function to reload the configuration by reparsing the
  * configuration file.
@@ -90,41 +132,4 @@ static void subscriptions(void){
         perror("Error: SIGUSR1 subscription failed");
         exit(EXIT_FAILURE);
     }
-}
-
-/**
- * @brief main function of the system service.
- */
-int main(int argc, char *argv[]){
-
-    pid_t rf;
-    ht = ht_create_table(16);
-
-    rf = fork();
-    switch(rf){
-        /* fork returns error */
-        case -1:
-            perror("Error: fork could not be completed");
-            exit(EXIT_FAILURE);
-        /* Child process, it is the daemon process */
-        case 0:
-            break;
-        /* Parent process, let it terminate */
-        default:
-            exit(EXIT_SUCCESS);
-    }
-
-    if(ini_file_parse(ht) != 0){
-        perror("Error: ini file could not be parsed");
-    }
-
-    subscriptions();
-
-    while(true){
-        pause();
-    }
-
-    ht_free_table(ht);
-
-    return 0;
 }
