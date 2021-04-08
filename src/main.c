@@ -10,8 +10,10 @@
 #include <stdbool.h>
 #include <syslog.h>
 #include <string.h>
+#include <dbus/dbus.h>
 #include "../inc/hashtable.h"
 #include "../inc/iniparse.h"
+#include "../inc/dbusfunctions.h"
 
 static HashTable *ht;
 
@@ -19,6 +21,7 @@ static void reload_config(void);
 static void log_config(void);
 static void sig_handler(int sig_num);
 static void subscriptions(void);
+static DBusHandlerResult service_messages(DBusConnection *connection, DBusMessage *message, void *user_data);
 
 /**
  * @brief main function of the system service.
@@ -26,6 +29,9 @@ static void subscriptions(void);
 int main(int argc, char *argv[]){
 
     pid_t rf;
+    DBusConnection *connection;
+    DBusError error;
+    DBusObjectPathVTable vtable;
     ht = ht_create_table(16);
 
     rf = fork();
@@ -48,8 +54,18 @@ int main(int argc, char *argv[]){
 
     subscriptions();
 
+    dbus_error_init(&error);
+    connection = dbus_bus_get(DBUS_BUS_SESSION, &error);
+    check_error(&error);
+    dbus_bus_request_name(connection, "com.redhat.SystemService", 0, &error);
+    check_error(&error);
+    vtable.message_function = service_messages;
+    vtable.unregister_function = NULL;
+    dbus_connection_try_register_object_path(connection, "/com/redhat/SystemService", &vtable, NULL, &error);
+    check_error(&error);
+
     while(true){
-        pause();
+        dbus_connection_read_write_dispatch(connection, 1000);
     }
 
     ht_free_table(ht);
@@ -132,4 +148,39 @@ static void subscriptions(void){
         perror("Error: SIGUSR1 subscription failed");
         exit(EXIT_FAILURE);
     }
+}
+
+/**
+ * @brief callback function for managing the method calling through d-bus. It follows a specific
+ * format defined in dbus.freedesktop.org (DBusObjectPathMessageFunction).
+ *
+ * @param[in] *connection.
+ * @param[in] *message pointer to the message to be sent or received over the connection.
+ * @param[in] *user_data
+ *
+ * @return the message handler result (type enum DBusHandlerResult).
+ */
+static DBusHandlerResult service_messages(DBusConnection *connection, DBusMessage *message, void *user_data){
+
+    DBusHandlerResult result;
+    const char *interface_name = dbus_message_get_interface(message);
+    const char *member_name = dbus_message_get_member(message);
+
+    if((strcmp("org.freedesktop.DBus.Introspectable", interface_name) == 0) && (strcmp("Introspect", member_name) == 0)){
+        respond_to_introspect(connection, message);
+        result = DBUS_HANDLER_RESULT_HANDLED;
+    }
+    else if((strcmp("com.redhat.SystemService", interface_name) == 0) && (strcmp("ReloadConfig", member_name) == 0)){
+        reload_config();
+        result = DBUS_HANDLER_RESULT_HANDLED;
+    }
+    else if((strcmp("com.redhat.SystemService", interface_name) == 0) && (strcmp("LogConfig", member_name) == 0)){
+        log_config();
+        result = DBUS_HANDLER_RESULT_HANDLED;
+    }
+    else{
+        result = DBUS_HANDLER_RESULT_NOT_YET_HANDLED;
+    }
+
+    return result;
 }

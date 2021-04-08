@@ -5,8 +5,9 @@ OBJ_DIR = ./obj
 BIN_DIR = ./bin
 OBJS = $(OBJ_DIR)/main.o \
 	   $(OBJ_DIR)/hashtable.o \
-	   $(OBJ_DIR)/iniparse.o
-CFLAGS = -Wall -I$(INC_DIR)
+	   $(OBJ_DIR)/iniparse.o \
+	   $(OBJ_DIR)/dbusfunctions.o
+CFLAGS = -Wall -I$(INC_DIR) `pkg-config --cflags dbus-1` `pkg-config --libs dbus-1`
 
 $(TARGET) : $(OBJS)
 	@mkdir -p $(BIN_DIR)
