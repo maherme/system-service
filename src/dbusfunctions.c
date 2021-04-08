@@ -12,14 +12,14 @@
  */
 void check_error(DBusError *error){
 
-    if (dbus_error_is_set(error)) {
+    if(dbus_error_is_set(error)){
         perror(error->message);
         exit(EXIT_FAILURE);
     }
 }
 
 /**
- * @brief 
+ * @brief function to respond to the introspection request.
  *
  * @param[in] *connection pointer to handler the connection for answering to the method called.
  * @param[in] *request pointer to the message to be received over the connection.
@@ -30,6 +30,7 @@ void respond_to_introspect(DBusConnection *connection, DBusMessage *request){
 
     DBusMessage *reply;
 
+    /* XML description of the interfaces */
     const char *introspection_data =
         " <!DOCTYPE node PUBLIC \"-//freedesktop//DTD D-BUS Object Introspection 1.0//EN\" "
         "\"http://www.freedesktop.org/standards/dbus/1.0/introspect.dtd\">"

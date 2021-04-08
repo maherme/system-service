@@ -48,23 +48,31 @@ int main(int argc, char *argv[]){
             exit(EXIT_SUCCESS);
     }
 
+    /* Parsing the ini file */
     if(ini_file_parse(ht) != 0){
         perror("Error: ini file could not be parsed");
     }
 
+    /* Subscribing to system signals */
     subscriptions();
 
+    /* Connecting to D-Bus */
     dbus_error_init(&error);
+    /* Connection to bus session */
     connection = dbus_bus_get(DBUS_BUS_SESSION, &error);
     check_error(&error);
+    /* Requesting a name */
     dbus_bus_request_name(connection, "com.redhat.SystemService", 0, &error);
     check_error(&error);
+    /* Linking the callback function */
     vtable.message_function = service_messages;
     vtable.unregister_function = NULL;
+    /* Registering a new object for the service */
     dbus_connection_try_register_object_path(connection, "/com/redhat/SystemService", &vtable, NULL, &error);
     check_error(&error);
 
     while(true){
+        /* Waiting for reading a message */
         dbus_connection_read_write_dispatch(connection, 1000);
     }
 
