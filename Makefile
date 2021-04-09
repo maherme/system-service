@@ -1,3 +1,4 @@
+ROOT = /
 TARGET = $(BIN_DIR)/main
 SRC_DIR = ./src
 INC_DIR = ./inc
@@ -25,3 +26,12 @@ all: $(TARGET)
 .PHONY : clean
 clean:
 	@rm -r $(OBJ_DIR) $(BIN_DIR)
+
+.PHONY : install
+install:
+	@mkdir $(ROOT)/etc/example
+	@cp ./etc/daemon.conf $(ROOT)/etc/example
+
+.PHONY : uninstall
+uninstall:
+	@rm -rfv $(ROOT)/etc/example
