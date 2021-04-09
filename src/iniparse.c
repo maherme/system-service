@@ -57,9 +57,15 @@ int ini_file_parse(HashTable* htable){
     }
 
     while(((read = getline(&line, &len, fd)) != -1) && (ret == 0)){
+        /* Ignore comment lines */
         if(strchr(COMMENT, line[0])){
             /* do nothing */
         }
+        /* Ignore new empty lines */
+        else if(line[0] == '\n'){
+            /* do nothing */
+        }
+        /* Detect section line */
         else if(line[0] == '['){
             if((count_char(line, '[') == 1) && (count_char(line, ']') == 1) && (line[strlen(line)-2] == ']')){
                 section = upd_str(strtok(line, "[]"));
@@ -68,6 +74,7 @@ int ini_file_parse(HashTable* htable){
                 ret = -1;
             }
         }
+        /* Detect parameter assignment line */
         else{
             if(count_char(line, '=') == 1){
                 key = strtok(line, "=");
