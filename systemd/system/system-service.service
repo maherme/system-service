@@ -1,0 +1,9 @@
+[Unit]
+Description=System service for testing.
+
+[Service]
+Type=forking
+ExecStart=/usr/local/bin/system-service
+
+[Install]
+WantedBy=multi-user.target

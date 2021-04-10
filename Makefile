@@ -1,5 +1,5 @@
 ROOT = /
-TARGET = $(BIN_DIR)/main
+TARGET = $(BIN_DIR)/system-service
 SRC_DIR = ./src
 INC_DIR = ./inc
 OBJ_DIR = ./obj
@@ -29,9 +29,13 @@ clean:
 
 .PHONY : install
 install:
-	@mkdir $(ROOT)/etc/example
+	@mkdir -p $(ROOT)/etc/example
 	@cp ./etc/daemon.conf $(ROOT)/etc/example
+	@cp ./bin/system-service $(ROOT)/usr/local/bin
+	@cp ./systemd/system/system-service.service $(ROOT)/etc/systemd/system
 
 .PHONY : uninstall
 uninstall:
 	@rm -rfv $(ROOT)/etc/example
+	@rm $(ROOT)/usr/local/bin/system-service
+	@rm $(ROOT)/etc/systemd/system/system-service.service
