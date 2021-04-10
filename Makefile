@@ -33,9 +33,11 @@ install:
 	@cp ./etc/daemon.conf $(ROOT)/etc/example
 	@cp ./bin/system-service $(ROOT)/usr/local/bin
 	@cp ./systemd/system/system-service.service $(ROOT)/etc/systemd/system
+	@cp ./systemd/system/com.redhat.SystemService.conf $(ROOT)/etc/dbus-1/system.d
 
 .PHONY : uninstall
 uninstall:
-	@rm -rfv $(ROOT)/etc/example
+	@rm -rf $(ROOT)/etc/example
 	@rm $(ROOT)/usr/local/bin/system-service
 	@rm $(ROOT)/etc/systemd/system/system-service.service
+	@rm $(ROOT)/etc/dbus-1/system.d/com.redhat.SystemService.conf

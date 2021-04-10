@@ -59,7 +59,7 @@ int main(int argc, char *argv[]){
     /* Connecting to D-Bus */
     dbus_error_init(&error);
     /* Connection to bus session */
-    connection = dbus_bus_get(DBUS_BUS_SESSION, &error);
+    connection = dbus_bus_get(DBUS_BUS_SYSTEM, &error);
     check_error(&error);
     /* Requesting a name */
     dbus_bus_request_name(connection, "com.redhat.SystemService", 0, &error);
