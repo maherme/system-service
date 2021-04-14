@@ -27,3 +27,24 @@ make install
 make uninstall
    - Remove all files and directories created by make install.
 ```
+First Steps:
+---
+Once you have cloned the project in your local directory execute:
+```
+make all
+make install
+systemctl start system-service.service
+systemctl status system-service.service
+```
+You should watch the service is active and running.
+You can send the signals for printing out parsed configuration to system log:
+```
+kill -10 <PID>
+tail -n20 /var/log/messages
+```
+Or for reloading the configuration:
+```
+kill -1 <PID>
+kill -10 <PID>
+tail -n20 /var/log/messages
+```
