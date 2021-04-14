@@ -15,6 +15,8 @@
 #include "../inc/iniparse.h"
 #include "../inc/dbusfunctions.h"
 
+#define SIZE_HASH_TABLE 16
+
 static HashTable *ht;
 
 static void reload_config(void);
@@ -32,7 +34,7 @@ int main(int argc, char *argv[]){
     DBusConnection *connection;
     DBusError error;
     DBusObjectPathVTable vtable;
-    ht = ht_create_table(16);
+    ht = ht_create_table(SIZE_HASH_TABLE);
 
     rf = fork();
     switch(rf){
