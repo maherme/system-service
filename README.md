@@ -21,7 +21,7 @@ make install
    - Place the executable file in /usr/local/bin/.
    - Place the system-service.service file in /etc/systemd/system/.
    - Place the daemon.conf (config file for the application) file in /etc/example/ (if the example directory does not exist it is created).
-   - Place the com.redhat.SystemService.conf (config file for the D-Bus policies) file in /etc/dbus-1/sytem.d/.
+   - Place the com.redhat.SystemService.conf (config file with the D-Bus policies) file in /etc/dbus-1/sytem.d/.
 ```
 ```Makefile
 make uninstall
@@ -47,4 +47,12 @@ Or for reloading the configuration:
 kill -1 <PID>
 kill -10 <PID>
 tail -n20 /var/log/messages
+```
+If you want to use the D-Bus for printing out parsed configuration to system log:
+```
+dbus-send --system --type="method_call" --dest=com.redhat.SystemService /com/redhat/SystemService com.redhat.SystemService.LogConfig
+```
+Or for reloading the configuration:
+```
+dbus-send --system --type="method_call" --dest=com.redhat.SystemService /com/redhat/SystemService com.redhat.SystemService.ReloadConfig
 ```
