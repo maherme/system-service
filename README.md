@@ -27,7 +27,7 @@ make install
 make uninstall
    - Remove all files and directories created by make install.
 ```
-First Steps:
+Quick Start
 ---
 Once you have cloned the project in your local directory execute:
 ```
