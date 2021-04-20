@@ -1,0 +1,11 @@
+Improvements:
+
+* Replace hash function used in hashtable.c (function ht_index) with a better option to reduce the number of hash colisions.
+
+* Improve error management including the usage of errno.
+
+* Create debug and error log functions, and a configuration way to enable debug log traces. The result should be printed out in system log.
+
+* Create a test environment and a target in Makefile to install it and run it.
+
+* Analyze the source code with Valgrind to found memory leak errors.
