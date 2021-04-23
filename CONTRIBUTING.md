@@ -10,7 +10,7 @@ If you found a bug, you think something can be improved or you realize a new fea
 
 ### Posting Pull Requests
 
-  - Follow our code style, otherwhise your pull request will be refused and you will need to work on it.
+  - Follow our [Code Style Guidelines](CODING_STYLE.md), otherwhise your pull request will be refused and you will need to work on it.
   - Please make sure to test your changes before submitting your pull request.
   - Create a pull request only for fixing **one** bug, introducing **one** new feature or **one** improvement.
   - A pull request **shall** be linked to an issue.
@@ -32,7 +32,7 @@ If you are not familiar with a workflow you can start reading this: [Understandi
    git push
    ```
 4. Make your changes:
-   - Write your code (please, we have a code style guidelines, you should follow it).
+   - Write your code (please, we have a [Code Style Guidelines](CODING_STYLE.md), you should follow it).
    - **Test your code**.
    - Document your code, (we use doxygen format, please, take this into account).
 5. Commit and push your changes.
