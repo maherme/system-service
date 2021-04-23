@@ -58,12 +58,12 @@ char* upd_str(const char *src){
  *
  * @return index related to key:value.
  */
-static int ht_index(HashTable *table, const ht_key_t key){
+static int ht_index(HashTable *table, const ht_key_t key){ /* djb2 algorithm */
 
-    int sum = 0;
+    unsigned long sum = 5381;
 
     for(int i=0; key[i]; i++){
-        sum += key[i];
+        sum = ((sum << 5) + sum) + key[i];  /* ((sum << 5) + sum) == (33 * sum) */
     }
 
     return sum % table->size;
