@@ -60,4 +60,4 @@ dbus-send --system --type="method_call" --dest=com.redhat.SystemService /com/red
 
 Please see our [Contribution Guidelines](CONTRIBUTING.md).
 
-We also follow a [Coding Style Guidelines](), please take this into account.
+We also follow a [Coding Style Guidelines](CODING_STYLE.md), please take this into account.
