@@ -27,8 +27,8 @@ make install
 make uninstall
    - Remove all files and directories created by make install.
 ```
-Quick Start
----
+## Quick Start
+
 Once you have cloned the project in your local directory execute:
 ```
 make all
@@ -56,3 +56,8 @@ Or for reloading the configuration:
 ```
 dbus-send --system --type="method_call" --dest=com.redhat.SystemService /com/redhat/SystemService com.redhat.SystemService.ReloadConfig
 ```
+## Contributing
+
+Please see our [Contribution Guidelines](CONTRIBUTING.md).
+
+We also follow a [Coding Style Guidelines](), please take this into account.
