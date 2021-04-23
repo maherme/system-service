@@ -32,7 +32,7 @@ If you are not familiar with a workflow you can start reading this: [Understandi
    git push
    ```
 4. Make your changes:
-   - Write your code (please, we have a code style, you should follow it).
+   - Write your code (please, we have a code style guidelines, you should follow it).
    - **Test your code**.
    - Document your code, (we use doxygen format, please, take this into account).
 5. Commit and push your changes.
