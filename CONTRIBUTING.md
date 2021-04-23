@@ -34,6 +34,6 @@ If you are not familiar with a workflow you can start reading this: [Understandi
 4. Make your changes:
    - Write your code (please, we have a [Code Style Guidelines](CODING_STYLE.md), you should follow it).
    - **Test your code**.
-   - Document your code, (we use doxygen format, please, take this into account).
+   - Document your code, (we use [doxygen](CODING_STYLE.md#Doxygen) format, please, take this into account).
 5. Commit and push your changes.
 6. Submit your pull request.
